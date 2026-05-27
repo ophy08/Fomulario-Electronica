@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario Electrónica – U3 & U4</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080d12;
+    --surface: #0d1520;
+    --surface2: #111d2e;
+    --border: #1a3a5c;
+    --accent: #00d4ff;
+    --accent2: #00ff9d;
+    --accent3: #ff6b35;
+    --accent4: #ffd700;
+    --text: #c8e0f0;
+    --text-dim: #6a8fa8;
+    --formula-bg: #060d18;
+    --formula-border: #0f3a5a;
+    --glow: 0 0 12px rgba(0,212,255,0.3);
+    --glow2: 0 0 12px rgba(0,255,157,0.25);
+    --mono: 'Share Tech Mono', monospace;
+    --heading: 'Orbitron', sans-serif;
+    --body: 'Rajdhani', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 13px;
+    line-height: 1.45;
+    padding: 16px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    padding: 18px 10px 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent, transparent 40px,
+      rgba(0,212,255,0.03) 40px, rgba(0,212,255,0.03) 41px
+    );
+  }
+  .header h1 {
+    font-family: var(--heading);
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-shadow: var(--glow);
+  }
+  .header p {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+  }
+  .scan-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 10px auto 0;
+    width: 60%;
+    animation: scan 3s ease-in-out infinite;
+  }
+  @keyframes scan { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+  /* ── GRID LAYOUT ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .span2 { grid-column: span 2; }
+  .span3 { grid-column: span 3; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 6px 10px 5px;
+    font-family: var(--heading);
+    font-size: 9.5px;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-header.cyan  { color: var(--accent);  background: rgba(0,212,255,0.07); }
+  .card-header.green { color: var(--accent2); background: rgba(0,255,157,0.07); }
+  .card-header.orange{ color: var(--accent3); background: rgba(255,107,53,0.07); }
+  .card-header.gold  { color: var(--accent4); background: rgba(255,215,0,0.07); }
+
+  .card-num {
+    font-family: var(--mono);
+    font-size: 9px;
+    opacity: .6;
+    margin-left: auto;
+  }
+  .card-body { padding: 9px 10px; }
+
+  /* ── FORMULA BOXES ── */
+  .formula {
+    background: var(--formula-bg);
+    border: 1px solid var(--formula-border);
+    border-radius: 2px;
+    padding: 7px 10px;
+    margin: 5px 0;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    text-align: center;
+    position: relative;
+  }
+  .formula.cyan  { border-color: rgba(0,212,255,0.35); color: var(--accent);  box-shadow: inset 0 0 20px rgba(0,212,255,0.04); }
+  .formula.green { border-color: rgba(0,255,157,0.35); color: var(--accent2); box-shadow: inset 0 0 20px rgba(0,255,157,0.04); }
+  .formula.orange{ border-color: rgba(255,107,53,0.35); color: var(--accent3); box-shadow: inset 0 0 20px rgba(255,107,53,0.04); }
+  .formula.gold  { border-color: rgba(255,215,0,0.35); color: var(--accent4); box-shadow: inset 0 0 20px rgba(255,215,0,0.04); }
+
+  .formula sub, .formula sup { font-size: 9px; }
+
+  /* ── THEORY BULLETS ── */
+  .theory { margin: 5px 0; }
+  .theory li {
+    list-style: none;
+    padding: 3px 0 3px 14px;
+    position: relative;
+    font-size: 12px;
+    color: var(--text);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .theory li::before {
+    content: '▸';
+    position: absolute; left: 0;
+    color: var(--text-dim);
+    font-size: 9px;
+    top: 4px;
+  }
+  .theory li strong { color: var(--accent); font-weight: 600; }
+  .theory.green li::before { color: var(--accent2); }
+  .theory.orange li::before { color: var(--accent3); }
+  .theory.gold li::before { color: var(--accent4); }
+  .theory.green li strong { color: var(--accent2); }
+  .theory.orange li strong { color: var(--accent3); }
+  .theory.gold li strong { color: var(--accent4); }
+
+  /* ── PARAM TABLE ── */
+  .ptable { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  .ptable td {
+    padding: 3px 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 11.5px;
+    vertical-align: top;
+  }
+  .ptable td:first-child {
+    font-family: var(--mono);
+    color: var(--accent);
+    width: 35%;
+    white-space: nowrap;
+  }
+  .ptable.green td:first-child { color: var(--accent2); }
+  .ptable.orange td:first-child { color: var(--accent3); }
+  .ptable.gold td:first-child { color: var(--accent4); }
+
+  /* ── DIVIDER ── */
+  .unit-label {
+    font-family: var(--heading);
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 8px 0 4px;
+    border-top: 1px solid var(--border);
+    margin-top: 12px;
+  }
+
+  /* ── STATUS BADGES ── */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 1px;
+    margin: 2px 2px 2px 0;
+  }
+  .badge.cyan  { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+  .badge.green { background: rgba(0,255,157,0.15); color: var(--accent2); border: 1px solid rgba(0,255,157,0.3); }
+  .badge.orange{ background: rgba(255,107,53,0.15); color: var(--accent3); border: 1px solid rgba(255,107,53,0.3); }
+  .badge.gold  { background: rgba(255,215,0,0.15); color: var(--accent4); border: 1px solid rgba(255,215,0,0.3); }
+
+  /* ── CIRCUIT LABEL ── */
+  .circ-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    margin: 4px 0 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 6px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  /* ── SEPARADOR de sección ── */
+  .sep-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 4px 0;
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; color: #000; padding: 4mm; font-size: 10px; }
+    .header h1 { color: #0066aa; text-shadow: none; }
+    .scan-line, .header::before { display: none; }
+    .card { border: 1px solid #ccc; break-inside: avoid; }
+    .card-header.cyan,.card-header.green,.card-header.orange,.card-header.gold
+      { color: #000; background: #eee; }
+    .formula { background: #f5f5f5; color: #000 !important; border: 1px solid #aaa; box-shadow: none; }
+    .badge { border: 1px solid #aaa; color: #000 !important; background: #eee !important; }
+    .ptable td:first-child { color: #000 !important; }
+    .theory li strong { color: #000 !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>FORMULARIO DE ELECTRÓNICA</h1>
+  <p>UNIDADES 3 &amp; 4 — AMPLIFICADORES OPERACIONALES · TIRISTORES · OPTOACOPLADORES</p>
+  <div class="scan-line"></div>
+</div>
+
+<!-- ═══════════ UNIDAD 3 ═══════════ -->
+<div class="unit-label" style="margin-top:0; border-top: none; color: var(--accent); letter-spacing:5px;">◈ UNIDAD 3 — AMPLIFICADORES OPERACIONALES ◈</div>
+
+<div class="grid">
+
+  <!-- 3.1 AO IDEAL -->
+  <div class="card">
+    <div class="card-header cyan">⚡ AO IDEAL — CARACTERÍSTICAS <span class="card-num">3.1</span></div>
+    <div class="card-body">
+      <ul class="theory">
+        <li><strong>A<sub>v</sub> → ∞</strong> — Ganancia de voltaje infinita</li>
+        <li><strong>Z<sub>i</sub> → ∞</strong> — Impedancia entrada infinita</li>
+        <li><strong>Z<sub>o</sub> = 0</strong> — Impedancia de salida nula</li>
+        <li><strong>BW → ∞</strong> — Ancho de banda infinito</li>
+        <li><strong>CMRR → ∞</strong> — Rechazo de modo común infinito</li>
+      </ul>
+      <div class="sep-line"></div>
+      <div class="circ-label">CONDICIONES DEL MODELO IDEAL</div>
+      <div class="formula cyan">V<sub>e</sub> = 0 &nbsp;⟹&nbsp; V⁺ = V⁻</div>
+      <div class="formula cyan">I<sub>e</sub> = 0</div>
+      <ul class="theory" style="margin-top:4px">
+        <li>La corriente de entrada a cada terminal es <strong>cero</strong></li>
+        <li>Los voltajes de las entradas (+) y (−) son <strong>iguales</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3.2 COMPARADORES -->
+  <div class="card">
+    <div class="card-header cyan">⚡ COMPARADORES DE VOLTAJE <span class="card-num">3.2</span></div>
+    <div class="card-body">
+      <ul class="theory">
+        <li>Compara dos voltajes en sus entradas (+) y (−)</li>
+        <li>Salida es <strong>saturación positiva o negativa</strong></li>
+        <li>Opera en <strong>lazo abierto</strong> (sin retroalimentación)</li>
+      </ul>
+      <div class="sep-line"></div>
+      <div class="circ-label">NO INVERSOR — V<sub>in</sub> en (+)</div>
+      <div class="formula cyan">Si V⁺ &gt; V⁻ &nbsp;→&nbsp; V<sub>o</sub> = +V<sub>sat</sub></div>
+      <div class="formula cyan">Si V⁺ &lt; V⁻ &nbsp;→&nbsp; V<sub>o</sub> = −V<sub>sat</sub></div>
+      <div class="circ-label" style="margin-top:6px">INVERSOR — V<sub>in</sub> en (−)</div>
+      <div class="formula cyan">Si V⁻ &gt; V<sub>ref</sub> &nbsp;→&nbsp; V<sub>o</sub> = −V<sub>sat</sub></div>
+      <ul class="theory" style="margin-top:4px">
+        <li><strong>V<sub>sat</sub></strong> ≈ voltaje de alimentación (±V<sub>cc</sub>)</li>
+        <li>Aplicación: detectores de nivel, conversores A/D</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3.3 INVERSOR -->
+  <div class="card">
+    <div class="card-header cyan">⚡ AMPLIFICADOR INVERSOR <span class="card-num">3.3a</span></div>
+    <div class="card-body">
+      <ul class="theory">
+        <li>Entrada aplicada al terminal <strong>(−)</strong></li>
+        <li>Desfasa la salida <strong>180°</strong> respecto a la entrada</li>
+        <li>Terminal (+) conectado a tierra</li>
+      </ul>
+      <div class="circ-label">GANANCIA Y SALIDA</div>
+      <div class="formula cyan">V<sub>o</sub> = −(R<sub>f</sub> / R<sub>1</sub>) · V<sub>1</sub></div>
+      <div class="formula cyan">A<sub>v</sub> = −R<sub>f</sub> / R<sub>1</sub></div>
+      <div class="sep-line"></div>
+      <table class="ptable">
+        <tr><td>R<sub>1</sub></td><td>Resistencia de entrada</td></tr>
+        <tr><td>R<sub>f</sub></td><td>Resistencia de retroalimentación</td></tr>
+        <tr><td>V<sub>o</sub></td><td>Voltaje de salida (invertido)</td></tr>
+      </table>
+      <div class="sep-line"></div>
+      <ul class="theory" style="margin-top:3px">
+        <li>Aplicaciones: acondicionamiento señales, filtros activos, conversión I→V</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3.3 NO INVERSOR -->
+  <div class="card">
+    <div class="card-header green">◎ AMPLIFICADOR NO INVERSOR <span class="card-num">3.3b</span></div>
+    <div class="card-body">
+      <ul class="theory green">
+        <li>Entrada aplicada al terminal <strong>(+)</strong></li>
+        <li>Mantiene la <strong>polaridad</strong> de la señal de entrada</li>
+        <li>Ganancia siempre <strong>&gt; 1</strong></li>
+      </ul>
+      <div class="circ-label">GANANCIA Y SALIDA</div>
+      <div class="formula green">V<sub>o</sub> = V<sub>1</sub> · (1 + R<sub>f</sub> / R<sub>1</sub>)</div>
+      <div class="formula green">A<sub>v</sub> = 1 + R<sub>f</sub> / R<sub>1</sub></div>
+      <div class="circ-label" style="margin-top:5px">SEGUIDOR DE VOLTAJE (BUFFER)</div>
+      <div class="formula green">V<sub>o</sub> = V<sub>1</sub> &nbsp;|&nbsp; A<sub>v</sub> = 1 &nbsp;(R<sub>f</sub>=0, R<sub>1</sub>=∞)</div>
+      <div class="sep-line"></div>
+      <ul class="theory green" style="margin-top:3px">
+        <li>Aplicaciones: buffer, interfaz con sensores, preamplificación</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3.3 SUMADOR -->
+  <div class="card">
+    <div class="card-header orange">◉ AMPLIFICADOR SUMADOR <span class="card-num">3.3c</span></div>
+    <div class="card-body">
+      <ul class="theory orange">
+        <li>Suma algebraica de varias entradas (también llamado <strong>sumador inversor</strong>)</li>
+        <li>Cada entrada tiene su propia ganancia independiente</li>
+      </ul>
+      <div class="circ-label">FÓRMULA GENERAL (3 entradas)</div>
+      <div class="formula orange" style="font-size:11.5px">V<sub>o</sub> = −R<sub>f</sub> (V<sub>1</sub>/R<sub>1</sub> + V<sub>2</sub>/R<sub>2</sub> + V<sub>3</sub>/R<sub>3</sub>)</div>
+      <div class="circ-label" style="margin-top:5px">CASO R<sub>1</sub>=R<sub>2</sub>=R<sub>3</sub>=R</div>
+      <div class="formula orange">V<sub>o</sub> = −(R<sub>f</sub>/R) · (V<sub>1</sub> + V<sub>2</sub> + V<sub>3</sub>)</div>
+      <div class="sep-line"></div>
+      <ul class="theory orange" style="margin-top:3px">
+        <li>Aplicaciones: mezcladores de audio, DAC simples, suma de señales de control</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3.3 DIFERENCIADOR -->
+  <div class="card">
+    <div class="card-header gold">◆ AMPLIFICADOR DIFERENCIADOR <span class="card-num">3.3d</span></div>
+    <div class="card-body">
+      <ul class="theory gold">
+        <li>Salida proporcional a la <strong>derivada</strong> de la entrada respecto al tiempo</li>
+        <li>C en serie a la entrada; R en la retroalimentación</li>
+        <li>Con CC en entrada: <strong>V<sub>o</sub> = 0</strong></li>
+      </ul>
+      <div class="circ-label">FÓRMULA DE SALIDA</div>
+      <div class="formula gold">v<sub>o</sub>(t) = −RC · dv<sub>1</sub>(t)/dt</div>
+      <div class="sep-line"></div>
+      <table class="ptable gold">
+        <tr><td>R</td><td>Resistencia de retroalimentación</td></tr>
+        <tr><td>C</td><td>Capacitor de entrada</td></tr>
+        <tr><td>dv<sub>1</sub>/dt</td><td>Rapidez de cambio de la señal</td></tr>
+      </table>
+      <div class="sep-line"></div>
+      <ul class="theory gold" style="margin-top:3px">
+        <li>Aplicaciones: detectores de bordes, acción derivativa PID, detección de transiciones</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /grid -->
+
+<!-- FILTROS — fila completa -->
+<div class="unit-label">— FILTROS CON AMPLIFICADOR OPERACIONAL — 3.4 —</div>
+<div class="grid">
+
+  <!-- FILTRO PASOBAJAS -->
+  <div class="card">
+    <div class="card-header cyan">⚡ FILTRO PASA-BAJAS <span class="card-num">3.4a</span></div>
+    <div class="card-body">
+      <ul class="theory">
+        <li>Pasa frecuencias desde 0 Hz hasta <strong>f<sub>OH</sub></strong></li>
+        <li>Atenúa: 1° orden −20 dB/déc · 2° orden −40 dB/déc</li>
+      </ul>
+      <div class="circ-label">FRECUENCIA DE CORTE SUPERIOR</div>
+      <div class="formula cyan">f<sub>OH</sub> = 1 / (2π · R<sub>1</sub> · C<sub>1</sub>)</div>
+      <div class="circ-label" style="margin-top:5px">GANANCIA (NO INVERSOR)</div>
+      <div class="formula cyan">A<sub>v</sub> = 1 + R<sub>F</sub> / R<sub>G</sub></div>
+      <ul class="theory" style="margin-top:4px">
+        <li>2° orden: dos etapas RC en cascada, misma f<sub>OH</sub></li>
+        <li>Aplicaciones: audio, anti-aliasing, instrumentación</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FILTRO PASOALTAS -->
+  <div class="card">
+    <div class="card-header green">◎ FILTRO PASA-ALTAS <span class="card-num">3.4b</span></div>
+    <div class="card-body">
+      <ul class="theory green">
+        <li>Pasa frecuencias <strong>por encima</strong> de f<sub>OL</sub></li>
+        <li>Elimina CC y componentes de baja frecuencia</li>
+        <li>Comportamiento opuesto al pasa-bajas</li>
+      </ul>
+      <div class="circ-label">FRECUENCIA DE CORTE INFERIOR</div>
+      <div class="formula green">f<sub>OL</sub> = 1 / (2π · R<sub>1</sub> · C<sub>1</sub>)</div>
+      <div class="circ-label" style="margin-top:5px">GANANCIA</div>
+      <div class="formula green">A<sub>v</sub> = 1 + R<sub>F</sub> / R<sub>G</sub></div>
+      <ul class="theory green" style="margin-top:4px">
+        <li>2° orden (R<sub>1</sub>=R<sub>2</sub>, C<sub>1</sub>=C<sub>2</sub>): misma fórmula, −40 dB/déc</li>
+        <li>Aplicaciones: eliminación ruido 60 Hz, ECG, sonido</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FILTRO PASOBANDA -->
+  <div class="card">
+    <div class="card-header orange">◉ FILTRO PASA-BANDA <span class="card-num">3.4c</span></div>
+    <div class="card-body">
+      <ul class="theory orange">
+        <li>Combina un filtro pasa-altas + pasa-bajas en cascada</li>
+        <li>Pasa solo un <strong>rango</strong> de frecuencias entre f<sub>OL</sub> y f<sub>OH</sub></li>
+        <li>Requiere: f<sub>OL</sub> &lt; f<sub>OH</sub></li>
+      </ul>
+      <div class="circ-label">FRECUENCIAS DE CORTE</div>
+      <div class="formula orange">f<sub>OL</sub> = 1/(2πR<sub>1</sub>C<sub>1</sub>) &nbsp;|&nbsp; f<sub>OH</sub> = 1/(2πR<sub>1</sub>C<sub>1</sub>)</div>
+      <div class="circ-label" style="margin-top:5px">ANCHO DE BANDA</div>
+      <div class="formula orange">BW = f<sub>OH</sub> − f<sub>OL</sub></div>
+      <div class="circ-label" style="margin-top:5px">GANANCIA ETAPAS</div>
+      <div class="formula orange">A<sub>vT</sub> = A<sub>v1</sub> × A<sub>v2</sub></div>
+      <ul class="theory orange" style="margin-top:4px">
+        <li>Aplicaciones: radio, comunicaciones, procesamiento de señales</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /grid filtros -->
+
+
+<!-- ═══════════ UNIDAD 4 ═══════════ -->
+<div class="unit-label" style="color: var(--accent3); letter-spacing:5px; margin-top:14px;">◈ UNIDAD 4 — TIRISTORES Y OTROS DISPOSITIVOS ◈</div>
+
+<div class="grid">
+
+  <!-- 4.1 TIRISTOR -->
+  <div class="card">
+    <div class="card-header orange">◉ TIRISTOR — ESTRUCTURA BÁSICA <span class="card-num">4.1</span></div>
+    <div class="card-body">
+      <ul class="theory orange">
+        <li>Familia de <strong>semiconductores de potencia</strong> (no es un solo componente)</li>
+        <li>Nombre: combinación de <em>tiratrón</em> + <em>transistor</em></li>
+        <li>Todos tienen exactamente <strong>4 capas p-n-p-n</strong></li>
+        <li>Fabricados en <strong>Silicio</strong> (alta temperatura y corriente)</li>
+      </ul>
+      <div class="circ-label">ESTRUCTURA P-N-P-N</div>
+      <div class="formula orange">p — n — p — n &nbsp;&nbsp;&nbsp; (3 uniones: J<sub>1</sub>, J<sub>2</sub>, J<sub>3</sub>)</div>
+      <div class="sep-line"></div>
+      <ul class="theory orange">
+        <li>Modo biestable: <strong>ABIERTO</strong> (circuito abierto) ↔ <strong>CERRADO</strong> (cable sólido)</li>
+        <li><strong>No amplifican</strong> señales de forma lineal</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4.2 SCR ESTRUCTURA -->
+  <div class="card">
+    <div class="card-header orange">◉ SCR — ESTRUCTURA Y OPERACIÓN <span class="card-num">4.2</span></div>
+    <div class="card-body">
+      <ul class="theory orange">
+        <li>Semiconductor de <strong>4 capas p-n-p-n</strong></li>
+        <li><strong>3 terminales:</strong> Ánodo (A), Cátodo (K), Compuerta/Gate (G)</li>
+        <li>G conectada a capa <em>p</em> intermedia ("el gatillo")</li>
+      </ul>
+      <div class="circ-label">MODELO DE 2 TRANSISTORES</div>
+      <div class="formula orange">PNP (Q₁) + NPN (Q₂) entrelazados</div>
+      <div class="circ-label" style="margin-top:5px">CONDICIÓN DE ENGANCHE (LATCHING)</div>
+      <div class="formula orange">α<sub>1</sub> + α<sub>2</sub> → 1 &nbsp;⟹&nbsp; I<sub>A</sub> → ∞</div>
+      <div class="sep-line"></div>
+      <div class="circ-label">ESTADOS DE OPERACIÓN</div>
+      <table class="ptable orange">
+        <tr><td>Bloqueo Directo</td><td>V<sub>AK</sub>&gt;0, sin pulso en G → circuito abierto</td></tr>
+        <tr><td>Conducción</td><td>Pulso en G o V<sub>AK</sub> &gt; V<sub>BO</sub> → ON</td></tr>
+        <tr><td>Bloqueo Inverso</td><td>V<sub>AK</sub>&lt;0 → como diodo inverso</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4.2 PARÁMETROS SCR -->
+  <div class="card">
+    <div class="card-header orange">◉ SCR — PARÁMETROS Y DISPARO <span class="card-num">4.2–4.3</span></div>
+    <div class="card-body">
+      <div class="circ-label">PARÁMETROS CRÍTICOS</div>
+      <table class="ptable orange">
+        <tr><td>V<sub>GT</sub>, I<sub>GT</sub></td><td>Voltaje/Corriente mínimos de disparo en G</td></tr>
+        <tr><td>I<sub>H</sub></td><td>Corriente de mantenimiento (mínima para seguir ON)</td></tr>
+        <tr><td>I<sub>L</sub></td><td>Corriente de enganche (para que "latch" al disparar)</td></tr>
+        <tr><td>dv/dt</td><td>Máx. rapidez de ↑ voltaje (evita disparo accidental)</td></tr>
+        <tr><td>di/dt</td><td>Máx. rapidez de ↑ corriente (evita destrucción)</td></tr>
+      </table>
+      <div class="circ-label" style="margin-top:6px">MÉTODOS DE DISPARO</div>
+      <ul class="theory orange">
+        <li><strong>Compuerta (I<sub>G</sub>):</strong> método estándar y seguro</li>
+        <li><strong>Voltaje ruptura V<sub>BO</sub>:</strong> no recomendado (daña el cristal)</li>
+        <li><strong>dv/dt:</strong> accidental por capacitancias internas</li>
+        <li><strong>Térmico:</strong> alta temperatura aumenta fuga hasta disparar</li>
+      </ul>
+      <div class="circ-label" style="margin-top:5px">CONTROL DE FASE (APLICACIONES 4.3)</div>
+      <table class="ptable orange">
+        <tr><td>Control R</td><td>Ángulo α: 0° a 90°</td></tr>
+        <tr><td>Control RC</td><td>Ángulo α: 0° a 180°</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /grid u4 -->
+
+<!-- DIAC y TRIAC -->
+<div class="grid-2">
+
+  <!-- DIAC -->
+  <div class="card">
+    <div class="card-header gold">◆ DIAC — ESTRUCTURA Y OPERACIÓN <span class="card-num">4.4a</span></div>
+    <div class="card-body">
+      <ul class="theory gold">
+        <li><strong>2 terminales</strong>, bidireccional — sin terminal de control</li>
+        <li>Actúa como <strong>interruptor de disparo</strong> (no controla energía)</li>
+        <li>Estructura: <strong>5 capas</strong> (n₁-p₁-n₂-p₂-n₃) para bidireccionalidad simétrica</li>
+        <li>Opera igual en ambos semiciclos de CA</li>
+      </ul>
+      <div class="circ-label">VOLTAJE DE RUPTURA</div>
+      <div class="formula gold">V<sub>BR</sub> ≈ 28 V a 42 V (simétrico)</div>
+      <div class="circ-label" style="margin-top:5px">COMPORTAMIENTO</div>
+      <table class="ptable gold">
+        <tr><td>|V| &lt; V<sub>BR</sub></td><td>Zona de bloqueo → circuito abierto</td></tr>
+        <tr><td>|V| ≥ V<sub>BR</sub></td><td>Conducción → resistencia negativa</td></tr>
+      </table>
+      <div class="sep-line"></div>
+      <ul class="theory gold">
+        <li>Curva I-V simétrica en cuadrantes 1 y 3</li>
+        <li>Uso principal: <strong>disparar al TRIAC</strong> con simetría</li>
+      </ul>
+      <div style="margin-top:6px">
+        <span class="badge gold">2 terminales</span>
+        <span class="badge gold">Sin Gate</span>
+        <span class="badge gold">Bidireccional</span>
+        <span class="badge gold">5 capas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRIAC -->
+  <div class="card">
+    <div class="card-header gold">◆ TRIAC — ESTRUCTURA Y OPERACIÓN <span class="card-num">4.4b–4.5</span></div>
+    <div class="card-body">
+      <ul class="theory gold">
+        <li>Equivale a <strong>dos SCR en antiparalelo</strong> con compuerta común</li>
+        <li><strong>3 terminales:</strong> MT1 (Ánodo 1), MT2 (Ánodo 2), Compuerta (G)</li>
+        <li>Estructura de <strong>5 capas</strong>, flujo bidireccional</li>
+        <li>Opera en <strong>cuadrante 1 y 3</strong> (CA completa)</li>
+      </ul>
+      <div class="circ-label">OPERACIÓN</div>
+      <table class="ptable gold">
+        <tr><td>Bloqueo</td><td>Circuito abierto hasta recibir I<sub>G</sub></td></tr>
+        <tr><td>Disparo</td><td>Pulso en G → encendido</td></tr>
+        <tr><td>R dinámica</td><td>0.01 Ω a 0.1 Ω (encendido)</td></tr>
+        <tr><td>Apagado</td><td>I<sub>A</sub> cae bajo I<sub>H</sub></td></tr>
+      </table>
+      <div class="circ-label" style="margin-top:5px">APLICACIONES (4.5)</div>
+      <div style="margin-top:4px">
+        <span class="badge gold">Dimmer de luz</span>
+        <span class="badge gold">Control de temperatura</span>
+        <span class="badge gold">Velocidad motores universales</span>
+        <span class="badge gold">Relé de estado sólido (SSR)</span>
+      </div>
+      <div class="sep-line" style="margin-top:6px"></div>
+      <ul class="theory gold">
+        <li>DIAC + TRIAC: disparo simétrico garantizado en ambos semiciclos</li>
+        <li>Capacidad &gt; 10 kW en unidades industriales</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /grid-2 -->
+
+<!-- OPTOACOPLADORES -->
+<div class="unit-label">— OPTOACOPLADORES — 4.6 / 4.7 —</div>
+<div class="grid">
+
+  <!-- CONCEPTO -->
+  <div class="card">
+    <div class="card-header cyan">⚡ OPTOACOPLADOR — CONCEPTO <span class="card-num">4.6a</span></div>
+    <div class="card-body">
+      <ul class="theory">
+        <li>Dispositivo con <strong>emisor de luz</strong> + <strong>fotosensor</strong> en una cápsula</li>
+        <li>Transfiere señales mediante <strong>luz</strong> (aislamiento eléctrico total)</li>
+        <li>Protege circuitos de control de picos de voltaje en la etapa de potencia</li>
+      </ul>
+      <div class="circ-label">PRINCIPIO DE FUNCIONAMIENTO</div>
+      <div class="formula cyan">5 V (control) ←luz→ 230 V (potencia)</div>
+      <div class="sep-line"></div>
+      <table class="ptable">
+        <tr><td>Entrada</td><td>Corriente activa LED infrarrojo interno</td></tr>
+        <tr><td>Transmisión</td><td>Luz atraviesa cubierta aislante</td></tr>
+        <tr><td>Salida</td><td>Fotosensor detecta luz → modula corriente</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- TIPOS -->
+  <div class="card">
+    <div class="card-header cyan">⚡ TIPOS DE OPTOACOPLADORES <span class="card-num">4.6b</span></div>
+    <div class="card-body">
+      <table class="ptable">
+        <tr><td>Fotodiodo</td><td>Alta frecuencia, corriente salida pequeña</td></tr>
+        <tr><td>Fototransistor</td><td>Señales lógicas, bajo voltaje, el más versátil</td></tr>
+        <tr><td>Foto-Darlington</td><td>Alta sensibilidad, mayor ganancia de corriente</td></tr>
+        <tr><td>Foto-SCR</td><td>Control potencia en CD; queda en ON hasta cortar V</td></tr>
+        <tr><td>Foto-TRIAC</td><td>Control CA (120/220 V); motores, sistemas térmicos</td></tr>
+      </table>
+      <div class="sep-line"></div>
+      <ul class="theory" style="margin-top:4px">
+        <li>Modelo referencia: <strong>ISO-LIT 1 (IL-1)</strong> — estándar del libro</li>
+        <li>Longitud de onda ajustada para máximo acoplamiento</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- APLICACIONES -->
+  <div class="card">
+    <div class="card-header cyan">⚡ APLICACIONES OPTOACOPLADORES <span class="card-num">4.7</span></div>
+    <div class="card-body">
+      <ul class="theory">
+        <li><strong>Aislamiento galvánico:</strong> proteger microcontroladores de cargas industriales</li>
+        <li><strong>Interfaces digitales:</strong> comunicación RS-232/RS-485 aislada</li>
+        <li><strong>Disparo de tiristores:</strong> control seguro de SCR/TRIAC desde µC</li>
+        <li><strong>Detección de cruce por cero:</strong> sincronismo con red CA</li>
+        <li><strong>Fuentes conmutadas (SMPS):</strong> retroalimentación aislada</li>
+        <li><strong>Sistemas industriales:</strong> PLCs, control de motores, relés de estado sólido</li>
+        <li><strong>Equipos médicos:</strong> aislamiento paciente-equipo</li>
+      </ul>
+      <div class="sep-line"></div>
+      <div class="formula cyan">V<sub>CE(sat)</sub> típico ≈ 0.3 V – 1 V (fototransistor ON)</div>
+      <div style="margin-top:6px">
+        <span class="badge cyan">Aislamiento</span>
+        <span class="badge cyan">Sin conexión eléctrica directa</span>
+        <span class="badge cyan">Protección EMI</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /grid opto -->
+
+<!-- FOOTER -->
+<div class="footer">
+  ELECTRÓNICA &nbsp;|&nbsp; UNIDADES 3 &amp; 4 &nbsp;|&nbsp; Formulario de referencia rápida &nbsp;|&nbsp; Boylestad - Electrónica: Teoría de Circuitos
+</div>
+
+</body>
+</html>
